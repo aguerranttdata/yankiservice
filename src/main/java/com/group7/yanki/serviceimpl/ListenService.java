@@ -1,6 +1,7 @@
 package com.group7.yanki.serviceimpl;
 
 import com.group7.yanki.dto.LinkRequest;
+import com.group7.yanki.dto.MessageKafka;
 import com.group7.yanki.dto.Result;
 import com.group7.yanki.model.Account;
 import com.group7.yanki.model.Yanki;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -88,4 +90,28 @@ public class ListenService {
         };
     }
 
+    @Bean
+    Consumer<MessageKafka> proccessyanki() {
+        return messageKafka -> {
+            if(messageKafka.getType().equalsIgnoreCase("request")) {
+                if(messageKafka.getDocument().equalsIgnoreCase("account")) {
+                    accountMap.get(messageKafka.getNumber())
+                            .hasElement()
+                            .map(hasElement -> {
+                                messageKafka.setType("response");
+                                if(hasElement) {
+                                    messageKafka.setSuccess(true);
+                                }
+                                else {
+                                    messageKafka.setSuccess(false);
+                                }
+                                return messageService.sendProcess(messageKafka);
+                            })
+                            .flatMap(res -> Mono.just(accountMap))
+                            .subscribe();
+
+                }
+            }
+        };
+    }
 }

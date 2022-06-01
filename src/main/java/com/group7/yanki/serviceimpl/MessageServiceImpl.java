@@ -1,6 +1,7 @@
 package com.group7.yanki.serviceimpl;
 
 import com.group7.yanki.dto.LinkRequest;
+import com.group7.yanki.dto.MessageKafka;
 import com.group7.yanki.dto.Result;
 import com.group7.yanki.model.Yanki;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,10 @@ public class MessageServiceImpl {
 
     public boolean sendToLink(LinkRequest linkRequest){
         return streamBridge.send("link-out-0",linkRequest);
+    }
+
+    public boolean sendProcess(MessageKafka messageKafka) {
+        return streamBridge.send("proccessyanki-out-0", messageKafka);
     }
 
 }
