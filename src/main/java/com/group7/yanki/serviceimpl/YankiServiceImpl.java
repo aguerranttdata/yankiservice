@@ -11,6 +11,7 @@ import com.group7.yanki.service.YankiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,8 +23,11 @@ import java.util.Objects;
 @Slf4j
 public class YankiServiceImpl implements YankiService {
 
+    @Autowired
     private YankiRepository yankiRepository;
+    @Autowired
     private AccountService accountService;
+    @Autowired
     private MessageServiceImpl messageService;
 
     @Override

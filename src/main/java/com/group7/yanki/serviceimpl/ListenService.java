@@ -111,6 +111,22 @@ public class ListenService {
                             .subscribe();
 
                 }
+                else {
+                    yankiRepository.findYankiByIdAndAmount(messageKafka.getMessage(), messageKafka.getAmount())
+                            .hasElement()
+                            .map(hasElement -> {
+                                messageKafka.setType("response");
+                                if(hasElement) {
+                                    messageKafka.setSuccess(true);
+                                }
+                                else {
+                                    messageKafka.setSuccess(false);
+                                }
+                                return messageService.sendProcess(messageKafka);
+                            })
+                            .flatMap(res -> Mono.just(accountMap))
+                            .subscribe();
+                }
             }
         };
     }

@@ -6,5 +6,4 @@ import reactor.core.publisher.Flux;
 
 public interface AccountRepository extends ReactiveMongoRepository<Account,String> {
     Flux<Account> findAccountByPhone(Long phone);
-
 }

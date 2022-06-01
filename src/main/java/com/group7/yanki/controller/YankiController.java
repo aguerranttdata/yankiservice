@@ -8,6 +8,7 @@ import com.group7.yanki.service.AccountService;
 import com.group7.yanki.service.YankiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 @Slf4j
 public class YankiController {
+    @Autowired
     private YankiService service;
 
     @GetMapping("{phone}")
